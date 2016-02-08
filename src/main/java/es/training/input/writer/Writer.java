@@ -1,4 +1,4 @@
-package es.training.writer;
+package es.training.input.writer;
 
 public class Writer {
 	private static final String	PINTADA	= "#";
@@ -18,12 +18,12 @@ public class Writer {
 
 	public String[][] executeFile(String body) {
 
-		String[] splittedBody = body.split("\n");
+		String[] splittedBody = body.split("\r\n");
 		Integer numberOfCommands = Integer.parseInt(splittedBody[0]);
 		if (numberOfCommands >= splittedBody.length) {
 			throw new IllegalArgumentException("No hay suficientes comandos");
 		}
-		for (int i = 1; i < numberOfCommands; i++) {
+		for (int i = 1; i <= numberOfCommands; i++) {
 			String command = splittedBody[i];
 			painting = executaCommand(command);
 
@@ -76,14 +76,20 @@ public class Writer {
 		if (row - square < 0 || row + square >= altura || col - square < 0 || col + square >= anchura) {
 			throw new IllegalArgumentException();
 		}
-		for (int i = 0; i < square; i++) {
-			for (int j = 0; j < square; j++) {
+		for (int i = 0; i <= square; i++) {
+			for (int j = 0; j <= square; j++) {
 				painting[row + i][col + j] = PINTADA;
+			}
+			for (int j = 0; j <= square; j++) {
+				painting[row + i][col - j] = PINTADA;
 			}
 		}
 
-		for (int i = 0; i < square; i++) {
-			for (int j = 0; j < square; j++) {
+		for (int i = 0; i <= square; i++) {
+			for (int j = 0; j <= square; j++) {
+				painting[row - i][col + j] = PINTADA;
+			}
+			for (int j = 0; j <= square; j++) {
 				painting[row - i][col - j] = PINTADA;
 			}
 		}
@@ -100,6 +106,17 @@ public class Writer {
 
 	private void eraseCell(Integer row, Integer col) {
 		painting[row][col] = BLANCO;
+
+	}
+
+	public void printPainting() {
+		System.out.println("-------------");
+		for (int i = 0; i < painting.length; i++) {
+			for (int j = 0; j < painting[i].length; j++) {
+				System.out.print(painting[i][j]);
+			}
+			System.out.println();
+		}
 
 	}
 }
